@@ -1,7 +1,5 @@
 #get_shaco_players.py 
 from get_top_players import requests, api_key
-
-#Step 1: Check champion mastery for all top players
 shaco_id = 35
 
 def get_mastery(puuid, n):
@@ -32,6 +30,12 @@ def identify_helper(mastery, championId):
 
 def identify_shaco_players(player_df):
     """Takes in a dataframe of highly-ranked players and checks if they play a lot of shaco based on the get mastery function, which arbitrarily checks their top 5 champion mastery"""
-    pass
-    #player_df['Shaco Main'] = player_df.apply(lambda x: x[])
+    #This should return True for all players with Shaco in their top 5, which I can then use to create a bit mask and filter. 
+    player_df['Shaco Main'] = player_df.apply(lambda x: identify_helper(get_mastery(x['puuid'], 5), shaco_id))
+
+    Shaco_mains = player_df[player_df['Shaco Main'] == True]
+
+    return Shaco_mains
+
+
 
